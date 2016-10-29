@@ -31,6 +31,7 @@ class Mind
       data = page.search('font').map { |elem| elem.inner_text.encode('UTF-8') }
       @latest_name = data[-3]
       @latest_talk = data[-2]
+      puts "> #{@latest_name}: #{@latest_talk}"
     end
   end
 
@@ -46,8 +47,13 @@ class Yayoi
     @mind = Mind.new
     @mind.login
     while true
-      sleep 10
-      @mind.hear
+      begin
+        sleep 30
+        @mind.hear
+        @mind.response
+      rescue SSLError
+        next
+      end
     end
   end
 end
